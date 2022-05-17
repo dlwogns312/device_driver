@@ -235,11 +235,6 @@ long dev_driver_ioctl(struct file *file,unsigned int ioctl_num,unsigned long ioc
                     init_fnd=value[i];
                     break;
                 }
-            if(init_fnd>8)
-            {
-                printk("Input Value Error!\n");
-                return -EFAULT;
-            }
             //initialize lcd
             memset(text_lcd,' ',sizeof(text_lcd));
             for(i=0;i<student_id;i++)
@@ -250,6 +245,11 @@ long dev_driver_ioctl(struct file *file,unsigned int ioctl_num,unsigned long ioc
             display();
             break;
         case IOCTL_COMMAND :
+            if(init_fnd>8)
+            {
+                printk("Input Value Error!\n");
+                return -EFAULT;
+            }
             printk(KERN_INFO"Start the Timer!\n");
             mytimer.timer.expires=get_jiffies_64()+(time_interval*HZ/10);
             mytimer.timer.data=(unsigned long)&mydata;
