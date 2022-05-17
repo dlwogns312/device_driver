@@ -191,6 +191,7 @@ void display(void)
     outw(_s_value,(unsigned int)iom_fnd_addr);	  
 
     //print lcd
+    text_lcd[32]=0;
     for(i=0;i<32;i++)
     {
         _s_value = (text_lcd[i] & 0xFF) << 8 | text_lcd[i + 1] & 0xFF;
@@ -240,7 +241,7 @@ long dev_driver_ioctl(struct file *file,unsigned int ioctl_num,unsigned long ioc
                 text_lcd[i]=id[i];
             for(i=16;i<16+name_length;i++)
                 text_lcd[i]=user_name[i];
-
+            printk("%s\n",text_lcd);
             display();
             break;
         case IOCTL_COMMAND :
