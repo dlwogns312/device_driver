@@ -251,7 +251,7 @@ long dev_driver_ioctl(struct file *file,unsigned int ioctl_num,unsigned long ioc
         case IOCTL_COMMAND :
             if(init_fnd>8)
             {
-                break;
+                return -EFAULT;
             }
             printk(KERN_INFO"Start the Timer!\n");
             mytimer.timer.expires=get_jiffies_64()+(time_interval*HZ/10);
