@@ -174,16 +174,17 @@ void display(void)
 {
     int i;
     unsigned short int _s_value=0;
+    int now_num=value[pos];
 
     //print dot
     for(i=0;i<=9;i++)
     {
-        _s_value = fpga_number[value[pos]][i] & 0x7F;
+        _s_value = fpga_number[now_num][i] & 0x7F;
 		outw(_s_value,(unsigned int)iom_dot_addr+i*2);
     }
 
     //print led
-    _s_value = 0x80>>(value[pos]-1);	    
+    _s_value = 0x80>>(now_num-1);	    
     outw(_s_value,(unsigned int)iom_led_addr);
 
     //print fnd
@@ -221,9 +222,10 @@ long dev_driver_ioctl(struct file *file,unsigned int ioctl_num,unsigned long ioc
 
             name_i=16;name_dir=1;num_i=0;num_dir=1;
             cnt=mydata.timer_cnt-1;
+            time_interval=mydata.time_interval;
             memcpy(value,mydata.timer_init,4);
 
-            printk(KERN_ALERT"Timer_interval : %d Timer_cnt :%d Timer_init : %s\n",mydata.time_interval,mydata.timer_cnt,value);
+            printk(KERN_ALERT"Timer_interval : %d Timer_cnt :%d Timer_init : %d%d%d%d\n",mydata.time_interval,mydata.timer_cnt,value[0],value[1],value[2],value[3]);
             //find the initial number of fnd
             
             for(i=0;i<4;i++)
@@ -234,14 +236,13 @@ long dev_driver_ioctl(struct file *file,unsigned int ioctl_num,unsigned long ioc
                     break;
                 }
             
-            time_interval=mydata.time_interval;
             //initialize lcd
             memset(text_lcd,' ',sizeof(text_lcd));
             for(i=0;i<student_id;i++)
                 text_lcd[i]=id[i];
-            for(i=16;i<16+name_length;i++)
-                text_lcd[i]=user_name[i];
-            printk("%s\n",text_lcd);
+            for(i=0;i<name_length;i++)
+                text_lcd[i+16]=user_name[i];
+           
             display();
             break;
         case IOCTL_COMMAND :

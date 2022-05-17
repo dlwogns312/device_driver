@@ -27,7 +27,6 @@ int main (int argc, char* argv[])
     }
     
     ioctl(fd,IOCTL_SET_MSG,&send_data);
-
     ioctl(fd,IOCTL_COMMAND);
     close(fd);
 
