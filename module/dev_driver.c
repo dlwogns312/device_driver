@@ -235,7 +235,11 @@ long dev_driver_ioctl(struct file *file,unsigned int ioctl_num,unsigned long ioc
                     init_fnd=value[i];
                     break;
                 }
-            
+            if(init_fnd>8)
+            {
+                printk("Input Value Error!\n");
+                return -EFAULT;
+            }
             //initialize lcd
             memset(text_lcd,' ',sizeof(text_lcd));
             for(i=0;i<student_id;i++)
