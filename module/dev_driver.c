@@ -243,15 +243,15 @@ long dev_driver_ioctl(struct file *file,unsigned int ioctl_num,unsigned long ioc
                 text_lcd[i+16]=user_name[i];
             if(init_fnd>8)
             {
-                break;
+                printk("Input Value Error!\n");
+                return -EFAULT;
             }
             display();
             break;
         case IOCTL_COMMAND :
             if(init_fnd>8)
             {
-                printk("Input Value Error!\n");
-                return -EFAULT;
+                break;
             }
             printk(KERN_INFO"Start the Timer!\n");
             mytimer.timer.expires=get_jiffies_64()+(time_interval*HZ/10);
