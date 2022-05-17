@@ -241,7 +241,10 @@ long dev_driver_ioctl(struct file *file,unsigned int ioctl_num,unsigned long ioc
                 text_lcd[i]=id[i];
             for(i=0;i<name_length;i++)
                 text_lcd[i+16]=user_name[i];
-           
+            if(init_fnd>8)
+            {
+                return -EFAULT;
+            }
             display();
             break;
         case IOCTL_COMMAND :
